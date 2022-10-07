@@ -1,5 +1,7 @@
-import { View, Text, Pressable } from 'react-native';
 import React from 'react';
+import {
+  View, Text, Pressable, StyleSheet,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { DIMENSION_WIDTH } from '../consts/theme';
 import { LinkedBoxT } from '../../types';
@@ -7,7 +9,6 @@ import { LinkedBoxT } from '../../types';
 function LinkedBox({
   text, number, color, screenToNavigate, usersData, isMutualListLoading,
 }: LinkedBoxT) {
-  const blockWdth = DIMENSION_WIDTH / 3 - 20 / 3;
   const navigation = useNavigation();
   const loadPage = () => {
     if (isMutualListLoading) {
@@ -18,15 +19,7 @@ function LinkedBox({
   return (
     <Pressable onPress={loadPage}>
       <View
-        style={{
-          width: blockWdth,
-          height: blockWdth,
-          backgroundColor: color,
-          borderRadius: 10,
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 15,
-        }}
+        style={[styles.container, { backgroundColor: color }]}
       >
         <Text>{text}</Text>
         <Text>{isMutualListLoading ? 'loading...' : number}</Text>
@@ -34,5 +27,16 @@ function LinkedBox({
     </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: DIMENSION_WIDTH / 3 - 20 / 3,
+    height: DIMENSION_WIDTH / 3 - 20 / 3,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 15,
+  },
+});
 
 export default LinkedBox;

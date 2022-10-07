@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const URL = 'https://api.github.com';
-const handleError = (error) => {
+const handleError = (error: { response: { status: number } }) => {
   if (error.response) {
     if (error.response.status === 0) {
       alert('No internet connection');

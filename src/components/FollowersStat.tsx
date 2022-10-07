@@ -1,13 +1,13 @@
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Canvas, Group, Circle } from '@shopify/react-native-skia';
 import {
-  blueCollor,
+  blueColor,
   DIMENSION_WIDTH,
-  greenCollor,
-  lightBlueCollor,
-  lightYellowCollor,
-  yellowCollor,
+  greenColor,
+  lightBlueColor,
+  lightYellowColor,
+  yellowColor,
 } from '../consts/theme';
 import loadAllList from '../api/loadAllList';
 import LinkedBox from './LinkedBox';
@@ -16,11 +16,10 @@ import findDistance from '../helper/findDistance';
 
 function FollowersStat({ followersCount, followingsCount, login }: FollowersStatT) {
   const maxRadius = DIMENSION_WIDTH / 4;
-  const height = 250;
   const [followingsList, setFollowingsList] = useState([]);
   const [followersList, setFollowersList] = useState([]);
   const [isMutualListLoading, setisMutualListLoading] = useState(true);
-
+  // TODO: Types UseState
   const followingsRFunc = () => {
     if (followingsCount > followersCount) {
       return maxRadius;
@@ -43,10 +42,11 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
     }
     return adaptiveR;
   };
-  const mutualSubscribes = followingsList.filter((item) => followersList.find((el) => el.id === item.id));
 
+  const mutualSubscribes = followingsList.filter((item) => followersList.find((el) => el.id === item.id));
   const followingsR = followingsRFunc();
   const followersR = followersRFunc();
+  // TODO: Is it Right ???
   const findNeededIntersectionSFunc = () => (mutualSubscribes.length * Math.PI * followingsR ** 2) / followingsCount;
   const findNeededIntersectionS = findNeededIntersectionSFunc();
 
@@ -65,11 +65,11 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
 
   return (
     <View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 20 }}>
+      <View style={styles.container}>
         <LinkedBox
           text="followings"
           number={followingsCount}
-          color={blueCollor}
+          color={blueColor}
           screenToNavigate="FollowersListScreen"
           usersData={{
             followingsCount,
@@ -82,7 +82,7 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
         <LinkedBox
           text="*You follow each other"
           number={mutualSubscribes.length}
-          color={greenCollor}
+          color={greenColor}
           isMutualListLoading={isMutualListLoading}
           screenToNavigate="MutualListScreen"
           usersData={{
@@ -96,7 +96,7 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
         <LinkedBox
           text="followers"
           number={followersCount}
-          color={yellowCollor}
+          color={yellowColor}
           screenToNavigate="FollowersListScreen"
           usersData={{
             followersCount,
@@ -108,31 +108,46 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
         />
       </View>
       <View
-        style={{
-          width: DIMENSION_WIDTH,
-          height,
-        }}
+        style={styles.canvasContainer}
       >
-        <Canvas style={{ flex: 1 }}>
+        <Canvas style={styles.canvasStyle}>
           <Group blendMode="multiply">
             <Circle
               cx={cx1}
               cy={maxRadius}
               r={followingsR}
-              color={lightBlueCollor}
+              color={lightBlueColor}
             />
             <Circle
               cx={cx2}
               cy={maxRadius}
               r={followersR}
-              color={lightYellowCollor}
+              color={lightYellowColor}
             />
           </Group>
         </Canvas>
       </View>
-      <Text style={{ padding: 20 }}>* The app can analyze only first 500 followers and 500 followings</Text>
+      <Text style={styles.noticeStyle}>* The app can analyze only first 500 followers and 500 followings</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  noticeStyle: {
+    padding: 20,
+  },
+  canvasStyle: {
+    flex: 1,
+  },
+  canvasContainer: {
+    width: DIMENSION_WIDTH,
+    height: 250,
+  },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 20,
+  },
+});
 
 export default FollowersStat;

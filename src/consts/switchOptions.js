@@ -1,7 +1,9 @@
-import { blueCollor, greenCollor, yellowCollor } from './theme';
+import { blueColor, greenColor, yellowColor } from './theme';
 
-export const options = [
-  { label: 'Only followings', value: '0', activeColor: blueCollor },
-  { label: 'Mutual', value: '1', activeColor: greenCollor },
-  { label: 'Only followers', value: '2', activeColor: yellowCollor },
+const options = [
+  { label: 'Only followings', value: '0', activeColor: blueColor },
+  { label: 'Mutual', value: '1', activeColor: greenColor },
+  { label: 'Only followers', value: '2', activeColor: yellowColor },
 ];
+
+export default options;

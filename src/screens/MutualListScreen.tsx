@@ -5,8 +5,8 @@ import {
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import ProfileMainInfo from '../components/ProfileMainInfo';
-import { options } from '../consts/switchOptions';
-import { mainColor, textGrey } from '../consts/theme';
+import options from '../consts/switchOptions';
+import { mainColor } from '../consts/theme';
 
 function MutualListScreen() {
   const route = useRoute();
@@ -34,7 +34,7 @@ function MutualListScreen() {
     <Pressable
       onPress={() => navigation.push('ProfileScreen', { userLogin: item.login, isNavigationBackable: true })}
     >
-      <ProfileMainInfo name={item.login} avatarUrl={item.avatar_url} />
+      <ProfileMainInfo name={item.login} avatarUrl={item.avatar_url} login="" />
     </Pressable>
   );
   const memoizedValue = useMemo(() => renderitem, []);
@@ -43,6 +43,7 @@ function MutualListScreen() {
     <View style={styles.container}>
       <View style={styles.switherContainer}>
         <SwitchSelector
+          hasPadding
           initial={1}
           options={options}
           textColor="black"
@@ -53,8 +54,8 @@ function MutualListScreen() {
       </View>
       <View style={styles.listContainer}>
         <FlatList
-          style={{ paddingHorizontal: 20 }}
-          contentContainerStyle={{ paddingTop: 10, paddingVertical: 60 }}
+          style={styles.listStyle}
+          contentContainerStyle={styles.contentContainerStyle}
           data={data}
           renderItem={memoizedValue}
           keyExtractor={(item) => item.id.toString()}
@@ -64,20 +65,25 @@ function MutualListScreen() {
   );
 }
 
-export default MutualListScreen;
-
 const styles = StyleSheet.create({
+  contentContainerStyle: {
+    paddingTop: 10,
+    paddingVertical: 60,
+  },
+  listStyle: {
+    paddingHorizontal: 20,
+  },
   switherContainer: {
     paddingVertical: 10,
     backgroundColor: mainColor,
   },
   container: {
     flex: 1,
-    // paddingHorizontal: 20,
     backgroundColor: 'white',
   },
   listContainer: {
-    // paddingVertical: 0,
   },
 
 });
+
+export default MutualListScreen;

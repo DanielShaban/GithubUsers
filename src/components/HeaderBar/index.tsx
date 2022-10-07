@@ -9,6 +9,7 @@ import HeaderImg from './HeaderImg';
 import { mainColor } from '../../consts/theme';
 
 function HeaderBar({ route }) {
+  // TODO: typeScript
   const insets = useSafeAreaInsets();
   const minHeight = 60 + insets.top;
   const navigation = useNavigation();

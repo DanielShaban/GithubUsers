@@ -8,7 +8,17 @@ export type LinkedBoxT={
   number: number;
   color:string;
   screenToNavigate:string;
-  usersData:{}[];
+  usersData:{
+    followingsCount?:number;
+    followersCount?:number;
+    login:string;
+    isFollowingsList?: boolean;
+    isNavigationBackable:boolean;
+    alreadyLoadedData?:{}[];
+    followersList?:{}[];
+    followingsList?:{}[];
+    mutualSubscribes?:{}[]
+  };
   isMutualListLoading?: boolean
 }
 export type LinkedTextT={
@@ -30,4 +40,13 @@ export type ProfileNamesT={
 export type UserAvatarT={
   size:number;
   src:string
+}
+export type loopLoadingT={
+  login:string;
+  count:number;
+  isFollowingsList:boolean
+}
+export type StyledSearchBarT={
+  text:string;
+  handleChange:()=>void;
 }

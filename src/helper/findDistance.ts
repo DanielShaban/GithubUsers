@@ -1,12 +1,15 @@
 // area of the intersection of two circles
-const IntersectionArea = (r1, r2, distance) => {
-  // Distance between circle centers
+const IntersectionArea = (r1: number, r2: number, distance: number) => {
+  // distance - Distance between circle centers
+  // r1,r2 - Radius of circles
   if (distance >= r1 + r2) {
     return 0;
   }
+  // No intersection
   if (distance <= Math.abs(r1 - r2)) {
     return Math.PI * Math.min(r1, r2) ** 2;
   }
+  // Inner circle
 
   const f1 = 2 * Math.acos((r1 ** 2 - r2 ** 2 + distance ** 2) / (2 * r1 * distance));
   const f2 = 2 * Math.acos((r2 ** 2 - r1 ** 2 + distance ** 2) / (2 * r2 * distance));
@@ -17,30 +20,32 @@ const IntersectionArea = (r1, r2, distance) => {
   return s1 + s2;
 };
 
-const findDistance = (R1, R2, neededIntersectionS): {R1: number, R2: number, neededIntersectionS: number} => {
+const findDistance = (R1: number, R2: number, neededIntersectionArea: number) => {
   let maxDistance = R1 + R2;
-  if (neededIntersectionS === 0) {
+  let minDistance = 0;
+
+  if (neededIntersectionArea === 0) {
     return maxDistance;
   }
-  if (neededIntersectionS >= Math.PI * R1 ** 2 || neededIntersectionS >= Math.PI * R2 ** 2) {
+  if (neededIntersectionArea >= Math.PI * R1 ** 2 || neededIntersectionArea >= Math.PI * R2 ** 2) {
     return 0;
   }
+  // Inner circle
 
   const accuracy = 0.1;
   let raoc = 0;
   // resulting area of intersection
 
-  let minDistance = 0;
   let distance = maxDistance;
-  // Binary Search
-  while (Math.abs(raoc - neededIntersectionS) > accuracy) {
+  // Next is Binary Search
+  while (Math.abs(raoc - neededIntersectionArea) > accuracy) {
     distance = Math.abs(maxDistance - minDistance) / 2 + minDistance;
     raoc = IntersectionArea(R1, R2, distance);
 
-    if (raoc > neededIntersectionS) {
+    if (raoc > neededIntersectionArea) {
       minDistance = distance;
     }
-    if (raoc < neededIntersectionS) {
+    if (raoc < neededIntersectionArea) {
       maxDistance = distance;
     }
   }

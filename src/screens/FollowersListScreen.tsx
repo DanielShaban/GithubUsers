@@ -10,8 +10,10 @@ import ProfileMainInfo from '../components/ProfileMainInfo';
 
 function FollowersListScreen() {
   const route = useRoute();
+  const navigation = useNavigation();
+
   const [followersList, setFollowersList] = useState<{}[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const {
     followersCount, login, isFollowingsList, alreadyLoadedData,
   } = route.params;
@@ -24,8 +26,27 @@ function FollowersListScreen() {
     return false;
   }, [isMorePages]);
 
-  const navigation = useNavigation();
-  const pressHandler = ({ login }) => navigation.push('ProfileScreen', { userLogin: login, isNavigationBackable: true });
+  const pressHandler = () => navigation.push('ProfileScreen', {
+    userLogin: login,
+    isNavigationBackable: true,
+  });
+
+  const renderitem = ({ item }) => (
+    <Pressable onPress={pressHandler}>
+      <ProfileMainInfo name="" avatarUrl={item.avatar_url} login={item.login} />
+    </Pressable>
+  );
+
+  const memoizedValue = useMemo(() => renderitem, []);
+  const getMoreFollowers = () => {
+    if (isMorePages) {
+      getSearchFollowers(login, page + 1, isFollowingsList).then((res) => setFollowersList(
+        [...followersList, ...res.data],
+      ));
+      return setPage(page + 1);
+    }
+    return false;
+  };
 
   useEffect(() => {
     if (alreadyLoadedData) {
@@ -35,21 +56,7 @@ function FollowersListScreen() {
       getSearchFollowers(login, page, isFollowingsList).then((res) => setFollowersList(res.data));
     }
   }, [login, isFollowingsList]);
-  const renderitem = ({ item }) => (
-    <Pressable onPress={() => pressHandler(item)}>
-      <ProfileMainInfo name="" avatarUrl={item.avatar_url} login={item.login} />
-    </Pressable>
-  );
 
-  const memoizedValue = useMemo(() => renderitem, []);
-  const getMoreFollowers = () => {
-    if (isMorePages) {
-      getSearchFollowers(login, page + 1, isFollowingsList).then((res) => setFollowersList([...followersList, ...res.data]));
-
-      return setPage(page + 1);
-    }
-    return false;
-  };
   return (
     <View style={styles.container}>
       <FlatList

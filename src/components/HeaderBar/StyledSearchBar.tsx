@@ -1,13 +1,12 @@
 import { TextInput, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import { DIMENSION_WIDTH } from '../../consts/theme';
+import { StyledSearchBarT } from '../../../types';
 
-function StyledSearchBar({ text, handleChange }) {
+function StyledSearchBar({ text, handleChange }: StyledSearchBarT) {
+  // TODO:TypeScript
   return (
-    <View style={{
-      paddingBottom: 10,
-    }}
-    >
+    <View style={styles.container}>
       <TextInput
         selectionColor="white"
         textAlignVertical="center"
@@ -23,6 +22,9 @@ function StyledSearchBar({ text, handleChange }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 10,
+  },
   TextInputStyle: {
     paddingVertical: 0,
     paddingHorizontal: 15,

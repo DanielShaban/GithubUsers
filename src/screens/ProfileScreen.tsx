@@ -13,7 +13,16 @@ import FollowersStat from '../components/FollowersStat';
 
 function ProfileScreen() {
   const route = useRoute();
-  const [userData, setUserData] = useState<{}>({});
+  // eslint-disable-next-line camelcase
+  const [userData, setUserData] = useState<{
+    name?: string;
+    login?: string;
+    avatar_url?: string;
+    bio?: string;
+    blog?: string;
+    followers?: number;
+    following?: number
+  }>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
   const userLogin: string = route.params?.userLogin;
