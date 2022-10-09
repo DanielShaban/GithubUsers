@@ -6,7 +6,7 @@ import {
 import SwitchSelector from 'react-native-switch-selector';
 import ProfileMainInfo from '../components/ProfileMainInfo';
 import options from '../consts/switchOptions';
-import { mainColor } from '../consts/theme';
+import { MAINCOLOR } from '../consts/theme';
 
 function MutualListScreen() {
   const route = useRoute();
@@ -16,10 +16,11 @@ function MutualListScreen() {
   const onlyFollowers: {}[] = followersList.filter(
     (item) => !mutualSubscribes.find((el) => el.id === item.id),
   );
-
+  // Followers - Followings = onlyFollowers
   const onlyFollowings: {}[] = followingsList.filter(
     (item) => !mutualSubscribes.find((el) => el.id === item.id),
   );
+  // Followings - Followers = onlyFollowings
 
   const changeList = (value: string) => {
     if (value === '0') {
@@ -30,12 +31,13 @@ function MutualListScreen() {
     }
     return setData(onlyFollowers);
   };
-  const renderitem = ({ item }: { login: string, avatar_url: string }) => (
-    // Not CamelCase Because it's from Github api
+  // TODO:Should i use react navigation here ?
+
+  const renderitem = ({ item }: { login: string, avatarUrl: string }) => (
     <Pressable
       onPress={() => navigation.push('ProfileScreen', { userLogin: item.login, isNavigationBackable: true })}
     >
-      <ProfileMainInfo name={item.login} avatarUrl={item.avatar_url} login="" />
+      <ProfileMainInfo name={item.login} avatarUrl={item.avatarUrl} login="" />
     </Pressable>
   );
   const memoizedValue = useMemo(() => renderitem, []);
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   },
   switherContainer: {
     paddingVertical: 10,
-    backgroundColor: mainColor,
+    backgroundColor: MAINCOLOR,
   },
   container: {
     flex: 1,

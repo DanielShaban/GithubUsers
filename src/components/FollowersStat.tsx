@@ -2,12 +2,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Canvas, Group, Circle } from '@shopify/react-native-skia';
 import {
-  blueColor,
+  BLUECOLOR,
   DIMENSION_WIDTH,
-  greenColor,
-  lightBlueColor,
-  lightYellowColor,
-  yellowColor,
+  GREENCOLOR,
+  LIGHTBLUECOLOR,
+  LIGHTYELLOWCOLOR,
+  YELLOWCOLOR,
 } from '../consts/theme';
 import loadAllList from '../api/loadAllList';
 import LinkedBox from './LinkedBox';
@@ -16,22 +16,24 @@ import findDistance from '../helper/findDistance';
 
 function FollowersStat({ followersCount, followingsCount, login }: FollowersStatT) {
   const maxRadius = DIMENSION_WIDTH / 4;
-  const [followingsList, setFollowingsList] = useState([]);
-  const [followersList, setFollowersList] = useState([]);
-  const [isMutualListLoading, setisMutualListLoading] = useState(true);
-  // TODO: Types UseState
-  const followingsRFunc = () => {
-    if (followingsCount > followersCount) {
-      return maxRadius;
+  const [followingsList, setFollowingsList] = useState<{}[]>([]);
+  const [followersList, setFollowersList] = useState<{}[]>([]);
+  const [isMutualListLoading, setisMutualListLoading] = useState<boolean>(true);
+  const mutualSubscribes = followingsList.filter((item) => followersList.find((el) => el.id === item.id));
+
+  const followersRFunc = (isFollowings: boolean) => {
+    if (isFollowings) {
+      if (followingsCount > followersCount) {
+        return maxRadius;
+      }
+
+      const adaptiveR = (followingsCount * maxRadius) / followersCount;
+      if (adaptiveR < 10) {
+        return 10;
+      }
+      return adaptiveR;
     }
 
-    const adaptiveR = (followingsCount * maxRadius) / followersCount;
-    if (adaptiveR < 10) {
-      return 10;
-    }
-    return adaptiveR;
-  };
-  const followersRFunc = () => {
     if (followersCount > followingsCount) {
       return maxRadius;
     }
@@ -43,10 +45,8 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
     return adaptiveR;
   };
 
-  const mutualSubscribes = followingsList.filter((item) => followersList.find((el) => el.id === item.id));
-  const followingsR = followingsRFunc();
-  const followersR = followersRFunc();
-  // TODO: Is it Right ???
+  const followingsR = followersRFunc(true);
+  const followersR = followersRFunc(false);
   const findNeededIntersectionSFunc = () => (mutualSubscribes.length * Math.PI * followingsR ** 2) / followingsCount;
   const findNeededIntersectionS = findNeededIntersectionSFunc();
 
@@ -69,7 +69,7 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
         <LinkedBox
           text="followings"
           number={followingsCount}
-          color={blueColor}
+          color={BLUECOLOR}
           screenToNavigate="FollowersListScreen"
           usersData={{
             followingsCount,
@@ -82,7 +82,7 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
         <LinkedBox
           text="*You follow each other"
           number={mutualSubscribes.length}
-          color={greenColor}
+          color={GREENCOLOR}
           isMutualListLoading={isMutualListLoading}
           screenToNavigate="MutualListScreen"
           usersData={{
@@ -96,7 +96,7 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
         <LinkedBox
           text="followers"
           number={followersCount}
-          color={yellowColor}
+          color={YELLOWCOLOR}
           screenToNavigate="FollowersListScreen"
           usersData={{
             followersCount,
@@ -116,13 +116,13 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
               cx={cx1}
               cy={maxRadius}
               r={followingsR}
-              color={lightBlueColor}
+              color={LIGHTBLUECOLOR}
             />
             <Circle
               cx={cx2}
               cy={maxRadius}
               r={followersR}
-              color={lightYellowColor}
+              color={LIGHTYELLOWCOLOR}
             />
           </Group>
         </Canvas>

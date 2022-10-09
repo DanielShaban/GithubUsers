@@ -1,3 +1,4 @@
+import userListMatrix from '../helper/userListMatrix';
 import { getSearchFollowers } from './apiReq';
 
 const maximumLoad = 5;
@@ -9,18 +10,17 @@ function getData(login: string, isFollowingsList: boolean, index = 0) {
   });
 }
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+// const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function loopLoading(login: string, count: number, isFollowingsList: boolean) {
   const userList: [] = [];
   let userRequest;
-  for (let index = 0; index < (count / 100) && index < maximumLoad; index++) {
+  for (let index = 0; index < count / 100 && index < maximumLoad; index++) {
     userRequest = getData(login, isFollowingsList, index);
     // eslint-disable-next-line no-await-in-loop
-    await userRequest.then((res) => userList.push(...res.data));
-    // this pauses loop until request is resolver for each interation
-    // eslint-disable-next-line no-await-in-loop
-    await sleep(500);
+    await userRequest.then((res) => userList.push(...userListMatrix(res.data)));
+    // this pause the loop until request is resolved for each iteration
+    // reqwest#1 --> wait --> reqwest#2 --> ...
   }
   return userList;
 }

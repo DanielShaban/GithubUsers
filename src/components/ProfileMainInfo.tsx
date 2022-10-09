@@ -4,7 +4,9 @@ import ProfileNames from './ProfileNames';
 import { ProfileMainInfoT } from '../../types';
 import UserAvatar from './UserAvatar';
 
-function ProfileMainInfo({ name, login, avatarUrl }: ProfileMainInfoT) {
+function ProfileMainInfo({
+  name, login, avatarUrl,
+}: ProfileMainInfoT) {
   return (
     <View style={styles.profileInfo}>
       <UserAvatar size={77} src={avatarUrl} />

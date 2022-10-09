@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 // import {HeaderT} from '../../types';
 import HeaderImg from './HeaderImg';
-import { mainColor } from '../../consts/theme';
+import { MAINCOLOR } from '../../consts/theme';
 
 function HeaderBar({ route }) {
   // TODO: typeScript
@@ -36,7 +36,7 @@ function HeaderBar({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: mainColor,
+    backgroundColor: MAINCOLOR,
     paddingHorizontal: 20,
   },
   logoContainer: {

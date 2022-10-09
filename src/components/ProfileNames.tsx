@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import { textGrey } from '../consts/theme';
+import { TEXTGREY } from '../consts/theme';
 import { ProfileNamesT } from '../../types';
 
 function ProfileNames({ name, userName }: ProfileNamesT) {
@@ -15,7 +15,7 @@ function ProfileNames({ name, userName }: ProfileNamesT) {
 const styles = StyleSheet.create({
   textUsername: {
     fontSize: 20,
-    color: textGrey,
+    color: TEXTGREY,
     fontWeight: '400',
   },
   textNAme: {

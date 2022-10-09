@@ -5,7 +5,7 @@ import {
 import React, { useCallback } from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { useNavigation } from '@react-navigation/native';
-import { linkColor } from '../consts/theme';
+import { LINKCOLOR } from '../consts/theme';
 import { LinkedTextT } from '../../types';
 
 function LinkedText({
@@ -38,7 +38,7 @@ function LinkedText({
 const styles = StyleSheet.create({
   textStyle: {
     fontSize: 20,
-    color: linkColor,
+    color: LINKCOLOR,
     paddingLeft: 7,
   },
   iconPadding: {

@@ -25,7 +25,7 @@ export const getSearchFollowers = (
   login: string,
   page: number,
   isFollowingsList: boolean,
-  per_page: number = 30,
+  per_page: number = 100,
 ) => axios({
   method: 'get',
   url: `${URL}/users/${login}/${isFollowingsList ? 'following' : 'followers'}`,

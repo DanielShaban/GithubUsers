@@ -6,7 +6,7 @@ import { useRoute } from '@react-navigation/native';
 import LinkedText from '../components/LinkedText';
 import ProfileMainInfo from '../components/ProfileMainInfo';
 import StyledSearchBar from '../components/HeaderBar/StyledSearchBar';
-import { mainColor } from '../consts/theme';
+import { MAINCOLOR } from '../consts/theme';
 import { getSearchUsers } from '../api/apiReq';
 import { debounce } from '../helper/debounce';
 import FollowersStat from '../components/FollowersStat';
@@ -17,12 +17,25 @@ function ProfileScreen() {
   const [userData, setUserData] = useState<{
     name?: string;
     login?: string;
-    avatar_url?: string;
+    avatarUrl?: string;
     bio?: string;
     blog?: string;
     followers?: number;
     following?: number
   }>({});
+  const userDataProfileMatrix = ({ data }) => {
+    setUserData({
+      name: data.name,
+      login: data.login,
+      avatarUrl: data.avatar_url,
+      bio: data.bio,
+      blog: data.blog,
+      followers: data.followers,
+      following: data.following,
+      id: data.id,
+    });
+    return setIsLoading(false);
+  };
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
   const userLogin: string = route.params?.userLogin;
@@ -36,10 +49,7 @@ function ProfileScreen() {
     debounce((entertext: string) => {
       if (entertext.length >= 3) {
         setIsLoading(true);
-        return getSearchUsers(entertext).then((res) => {
-          setUserData(res.data);
-          setIsLoading(false);
-        });
+        return getSearchUsers(entertext).then(userDataProfileMatrix);
       }
       if (entertext.length < 3) {
         return setUserData({});
@@ -50,7 +60,7 @@ function ProfileScreen() {
 
   useEffect(() => {
     if (userLogin) {
-      getSearchUsers(userLogin).then((res) => setUserData(res.data));
+      getSearchUsers(userLogin).then(userDataProfileMatrix);
     }
   }, [route]);
 
@@ -72,7 +82,7 @@ function ProfileScreen() {
                 <ProfileMainInfo
                   name={userData.name}
                   login={userData.login}
-                  avatarUrl={userData.avatar_url}
+                  avatarUrl={userData.avatarUrl}
                 />
                 {userData.bio && (
                   <View style={styles.paddingBottom}>
@@ -116,7 +126,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   searchbarContainer: {
-    backgroundColor: mainColor,
+    backgroundColor: MAINCOLOR,
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
