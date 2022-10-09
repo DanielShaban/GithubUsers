@@ -31,6 +31,7 @@ function MutualListScreen() {
     return setData(onlyFollowers);
   };
   const renderitem = ({ item }: { login: string, avatar_url: string }) => (
+    // Not CamelCase Because it's from Github api
     <Pressable
       onPress={() => navigation.push('ProfileScreen', { userLogin: item.login, isNavigationBackable: true })}
     >
