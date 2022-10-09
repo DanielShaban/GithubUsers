@@ -4,6 +4,7 @@ import {
   View, Pressable, FlatList, StyleSheet,
 } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
+import MemorizedProfileMainInfo from '../components/ProfileMainInfo';
 import ProfileMainInfo from '../components/ProfileMainInfo';
 import options from '../consts/switchOptions';
 import { MAINCOLOR } from '../consts/theme';
@@ -33,14 +34,21 @@ function MutualListScreen() {
   };
   // TODO:Should i use react navigation here ?
 
-  const renderitem = ({ item }: { login: string, avatarUrl: string }) => (
-    <Pressable
-      onPress={() => navigation.push('ProfileScreen', { userLogin: item.login, isNavigationBackable: true })}
-    >
-      <ProfileMainInfo name={item.login} avatarUrl={item.avatarUrl} login="" />
-    </Pressable>
-  );
-  const memoizedValue = useMemo(() => renderitem, []);
+  const pressHandle = (item) => navigation.push('ProfileScreen', {
+    userLogin: item.login,
+    isNavigationBackable: true,
+  });
+
+  function renderItem({ item }) {
+    return (
+      <MemorizedProfileMainInfo
+        name={item.login}
+        avatarUrl={item.avatarUrl}
+        login=""
+        pressHandle={() => pressHandle(item)}
+      />
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -60,7 +68,7 @@ function MutualListScreen() {
           style={styles.listStyle}
           contentContainerStyle={styles.contentContainerStyle}
           data={data}
-          renderItem={memoizedValue}
+          renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
         />
       </View>

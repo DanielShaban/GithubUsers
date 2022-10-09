@@ -31,7 +31,8 @@ export type LinkedTextT={
 export type ProfileMainInfoT={
   name:string;
   login:string;
-  avatarUrl:string
+  avatarUrl:string;
+  pressHandle?: ()=>void
 }
 export type ProfileNamesT={
   name:string;

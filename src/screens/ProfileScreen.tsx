@@ -4,12 +4,12 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import LinkedText from '../components/LinkedText';
-import ProfileMainInfo from '../components/ProfileMainInfo';
 import StyledSearchBar from '../components/HeaderBar/StyledSearchBar';
 import { MAINCOLOR } from '../consts/theme';
 import { getSearchUsers } from '../api/apiReq';
 import { debounce } from '../helper/debounce';
 import FollowersStat from '../components/FollowersStat';
+import MemorizedProfileMainInfo from '../components/ProfileMainInfo';
 
 function ProfileScreen() {
   const route = useRoute();
@@ -79,7 +79,7 @@ function ProfileScreen() {
           && Object.getPrototypeOf(userData) === Object.prototype && (
             <View>
               <View style={styles.profileContainer}>
-                <ProfileMainInfo
+                <MemorizedProfileMainInfo
                   name={userData.name}
                   login={userData.login}
                   avatarUrl={userData.avatarUrl}

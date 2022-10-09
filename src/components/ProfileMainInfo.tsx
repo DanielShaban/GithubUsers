@@ -1,17 +1,19 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
 import ProfileNames from './ProfileNames';
 import { ProfileMainInfoT } from '../../types';
 import UserAvatar from './UserAvatar';
 
 function ProfileMainInfo({
-  name, login, avatarUrl,
+  name, login, avatarUrl, pressHandle,
 }: ProfileMainInfoT) {
   return (
-    <View style={styles.profileInfo}>
-      <UserAvatar size={77} src={avatarUrl} />
-      <ProfileNames name={name || login} userName={name && login} />
-    </View>
+    <Pressable onPress={pressHandle}>
+      <View style={styles.profileInfo}>
+        <UserAvatar size={77} src={avatarUrl} />
+        <ProfileNames name={name || login} userName={name && login} />
+      </View>
+    </Pressable>
   );
 }
 const styles = StyleSheet.create({
@@ -21,5 +23,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
 });
+const MemorizedProfileMainInfo = React.memo(ProfileMainInfo);
 
-export default ProfileMainInfo;
+export default MemorizedProfileMainInfo;

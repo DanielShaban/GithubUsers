@@ -6,8 +6,8 @@ import React, {
 } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getSearchFollowers } from '../api/apiReq';
-import ProfileMainInfo from '../components/ProfileMainInfo';
 import userListMatrix from '../helper/userListMatrix';
+import MemorizedProfileMainInfo from '../components/ProfileMainInfo';
 
 function FollowersListScreen() {
   const route = useRoute();
@@ -30,20 +30,25 @@ function FollowersListScreen() {
     return false;
   }, [isMorePages]);
 
+  const pressHandle = (item) => navigation.push('ProfileScreen', {
+    userLogin: item.login,
+    isNavigationBackable: true,
+  });
+
   function renderItem({ item }) {
     return (
-      <Pressable
-        onPress={() => navigation.push('ProfileScreen', {
-          userLogin: item.login,
-          isNavigationBackable: true,
-        })}
-      >
-        <ProfileMainInfo name="" avatarUrl={item.avatarUrl} login={item.login} index={item.index} />
-      </Pressable>
+      <MemorizedProfileMainInfo
+        name=""
+        avatarUrl={item.avatarUrl}
+        login={item.login}
+        index={item.index}
+        pressHandle={() => pressHandle(item)}
+      />
     );
   }
 
-  const memoizedValue = useMemo(() => renderItem, []);
+  // const memoizedValue = useMemo(() => renderItem, []);
+
   const getMoreFollowers = () => {
     if (isMorePages) {
       getSearchFollowers(login, page + 1, isFollowingsList).then((res) => setFollowersList(
@@ -73,7 +78,7 @@ function FollowersListScreen() {
         data={followersList}
         initialNumToRender={5}
         contentContainerStyle={styles.flatlistContainer}
-        renderItem={memoizedValue}
+        renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         onEndReached={getMoreFollowers}
         ListFooterComponent={FooterLoadingIndecator}
