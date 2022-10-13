@@ -37,6 +37,7 @@ function Tabs(props) {
           tabBarIndicatorStyle: {
             backgroundColor: LIGHTBLUECOLOR,
           },
+          tabBarLabel: 'Only following',
         }}
         component={Followings}
         initialParams={params}
@@ -49,6 +50,7 @@ function Tabs(props) {
           tabBarIndicatorStyle: {
             backgroundColor: LIGHTGREENCOLOR,
           },
+          tabBarLabel: 'Mutual',
         }}
         component={Mutual}
         initialParams={params}
@@ -61,6 +63,7 @@ function Tabs(props) {
           tabBarIndicatorStyle: {
             backgroundColor: LIGHTYELLOWCOLOR,
           },
+          tabBarLabel: 'Only followers',
         }}
         component={Followers}
         initialParams={params}

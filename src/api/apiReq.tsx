@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const URL = 'https://api.github.com';
-const handleError = (error: { response: { status: number } }) => {
+const handleError = (error: {response: {status: number}}) => {
   if (error.response) {
     if (error.response.status === 0) {
       alert('No internet connection');
@@ -21,12 +21,7 @@ export const getSearchUsers = (login: string) => axios({
   url: `${URL}/users/${login}`,
 }).catch(handleError);
 
-export const getSearchFollowers = (
-  login: string,
-  page: number,
-  isFollowingsList: boolean,
-  per_page: number = 100,
-) => axios({
+export const getSearchFollowers = (login: string, page: number, isFollowingsList: boolean, per_page: number = 100) => axios({
   method: 'get',
   url: `${URL}/users/${login}/${isFollowingsList ? 'following' : 'followers'}`,
   params: {

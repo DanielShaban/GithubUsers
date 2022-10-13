@@ -10,6 +10,7 @@ import { getSearchUsers } from '../api/apiReq';
 import { debounce } from '../helper/debounce';
 import FollowersStat from '../components/FollowersStat';
 import MemorizedProfileMainInfo from '../components/ProfileMainInfo';
+import NoticeText from '../components/NoticeText';
 
 function ProfileScreen() {
   const route = useRoute();
@@ -21,35 +22,47 @@ function ProfileScreen() {
     bio?: string;
     blog?: string;
     followers?: number;
-    following?: number
+    following?: number;
   }>({});
-  const userDataProfileMatrix = ({ data }) => {
+  const getDataAndPutInState = ({ data }) => {
+    setIsSuchUser(false);
     setUserData({
-      name: data.name,
-      login: data.login,
-      avatarUrl: data.avatar_url,
-      bio: data.bio,
-      blog: data.blog,
-      followers: data.followers,
-      following: data.following,
-      id: data.id,
+      name: data?.name,
+      login: data?.login,
+      avatarUrl: data?.avatar_url,
+      bio: data?.bio,
+      blog: data?.blog,
+      followers: data?.followers,
+      following: data?.following,
+      id: data?.id,
     });
     return setIsLoading(false);
   };
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
+  const [isSuchUser, setIsSuchUser] = useState(false);
+
   const userLogin: string = route.params?.userLogin;
 
   const handleChange = (enteredText: string) => {
     setText(enteredText);
     debouncedSave(enteredText);
+    if (enteredText.length <= 3) {
+      setIsSuchUser(false);
+    }
   };
 
   const debouncedSave = useCallback(
     debounce((entertext: string) => {
       if (entertext.length >= 3) {
         setIsLoading(true);
-        return getSearchUsers(entertext).then(userDataProfileMatrix);
+        return getSearchUsers(entertext)
+          .then(getDataAndPutInState)
+          .catch(() => {
+            setIsLoading(false);
+            setIsSuchUser(true);
+            setUserData({});
+          });
       }
       if (entertext.length < 3) {
         return setUserData({});
@@ -60,7 +73,7 @@ function ProfileScreen() {
 
   useEffect(() => {
     if (userLogin) {
-      getSearchUsers(userLogin).then(userDataProfileMatrix);
+      getSearchUsers(userLogin).then(getDataAndPutInState);
     }
   }, [route]);
 
@@ -74,16 +87,13 @@ function ProfileScreen() {
       {/* Searchbar only in first profile screen */}
       <ScrollView style={styles.container}>
         {isLoading && <ActivityIndicator animating size="large" />}
-        {!isLoading && userData
+        {!isLoading
+          && userData
           && Object.keys(userData).length !== 0
           && Object.getPrototypeOf(userData) === Object.prototype && (
             <View>
               <View style={styles.profileContainer}>
-                <MemorizedProfileMainInfo
-                  name={userData.name}
-                  login={userData.login}
-                  avatarUrl={userData.avatarUrl}
-                />
+                <MemorizedProfileMainInfo name={userData.name} login={userData.login} avatarUrl={userData.avatarUrl} />
                 {userData.bio && (
                   <View style={styles.paddingBottom}>
                     <Text style={styles.textDescription}>{userData.bio}</Text>
@@ -91,13 +101,7 @@ function ProfileScreen() {
                 )}
 
                 <View style={styles.paddingBottom}>
-                  {userData.blog && (
-                    <LinkedText
-                      href={userData.blog}
-                      iconName="link"
-                      text={userData.blog}
-                    />
-                  )}
+                  {userData.blog && <LinkedText href={userData.blog} iconName="link" text={userData.blog} />}
                 </View>
               </View>
               <FollowersStat
@@ -106,12 +110,9 @@ function ProfileScreen() {
                 login={userData.login}
               />
             </View>
-          )}
-        {text.length < 3 && !userLogin && (
-          <Text style={styles.PSStyle}>
-            Minimum 3 characters to search
-          </Text>
         )}
+        {text.length < 3 && !userLogin && <NoticeText text="Minimum 3 characters to search" />}
+        {isSuchUser && <NoticeText text="No such users" />}
       </ScrollView>
     </View>
   );
