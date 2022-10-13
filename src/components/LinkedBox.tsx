@@ -20,10 +20,16 @@ function LinkedBox({
     return navigation.push(screenToNavigate, usersData);
   };
   return (
-    <Pressable onPress={loadPage}>
-      <View
-        style={[styles.container, { backgroundColor: color }]}
-      >
+    <Pressable
+      onPress={loadPage}
+      style={({ pressed }) => [
+        {
+          backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
+          borderRadius: 10,
+        },
+      ]}
+    >
+      <View style={[styles.container, { backgroundColor: color }]}>
         <Text>{text}</Text>
         <Text>{isMutualListLoading ? 'loading...' : number}</Text>
       </View>

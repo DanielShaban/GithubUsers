@@ -39,7 +39,9 @@ run android simulator
 ## Limits
 These limits are related to the github api, which gives a certain number of requests per hour (60). Moreover, effective analytics and visualization require loading a large number of followers at once, which takes 10 requests at once.
 ## Demo
-Will be later
+
+https://user-images.githubusercontent.com/55671854/195504838-020bbd8c-10ac-49f3-8b49-4c1137f0dc77.mp4
+
 ## What technologies were used
 - TypeScript
 - React Navigation 6
