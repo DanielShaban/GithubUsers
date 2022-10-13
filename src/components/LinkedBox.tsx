@@ -14,6 +14,9 @@ function LinkedBox({
     if (isMutualListLoading) {
       return null;
     }
+    if (screenToNavigate === 'MutualListScreen') {
+      return navigation.push(screenToNavigate, usersData);
+    }
     return navigation.push(screenToNavigate, usersData);
   };
   return (

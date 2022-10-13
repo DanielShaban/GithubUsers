@@ -111,20 +111,20 @@ function FollowersStat({ followersCount, followingsCount, login }: FollowersStat
         style={styles.canvasContainer}
       >
         <Canvas style={styles.canvasStyle}>
-          <Group blendMode="multiply">
-            <Circle
-              cx={cx1}
-              cy={maxRadius}
-              r={followingsR}
-              color={LIGHTBLUECOLOR}
-            />
-            <Circle
-              cx={cx2}
-              cy={maxRadius}
-              r={followersR}
-              color={LIGHTYELLOWCOLOR}
-            />
-          </Group>
+          <Circle
+            blendMode="multiply"
+            cx={cx1}
+            cy={maxRadius}
+            r={followingsR}
+            color={LIGHTBLUECOLOR}
+          />
+          <Circle
+            blendMode="multiply"
+            cx={cx2}
+            cy={maxRadius}
+            r={followersR}
+            color={LIGHTYELLOWCOLOR}
+          />
         </Canvas>
       </View>
       <Text style={styles.noticeStyle}>* The app can analyze only first 500 followers and 500 followings</Text>
