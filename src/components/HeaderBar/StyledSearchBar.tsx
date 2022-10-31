@@ -4,7 +4,6 @@ import { DIMENSION_WIDTH } from '../../consts/theme';
 import { StyledSearchBarT } from '../../../types';
 
 function StyledSearchBar({ text, handleChange }: StyledSearchBarT) {
-  // TODO:TypeScript
   return (
     <View style={styles.container}>
       <TextInput

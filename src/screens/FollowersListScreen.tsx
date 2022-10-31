@@ -1,9 +1,7 @@
 import {
-  View, Pressable, StyleSheet, FlatList, ActivityIndicator,
+  View, StyleSheet, FlatList, ActivityIndicator,
 } from 'react-native';
-import React, {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getSearchFollowers } from '../api/apiReq';
 import userListMatrix from '../helper/userListMatrix';
@@ -20,10 +18,8 @@ function FollowersListScreen() {
   } = route.params;
 
   const isMorePages = Number(followersCount) > page * 100;
-  // used to specify whether the loading indicator should be displayed or not
+  // use to specify whether the loading indicator should be displayed or not
   const FooterLoadingIndecator = useCallback(() => {
-    // console.log('FooterLoadingIndecator');
-    // TODO: too many loads
     if (isMorePages) {
       return <ActivityIndicator animating size="large" />;
     }
@@ -51,11 +47,8 @@ function FollowersListScreen() {
 
   const getMoreFollowers = () => {
     if (isMorePages) {
-      getSearchFollowers(login, page + 1, isFollowingsList).then((res) => setFollowersList(
-        [...followersList,
-        ...userListMatrix(res.data),
-        ],
-      ));
+      getSearchFollowers(login, page + 1, isFollowingsList)
+        .then((res) => setFollowersList([...followersList, ...userListMatrix(res.data)]));
       return setPage(page + 1);
     }
     return false;
@@ -67,7 +60,8 @@ function FollowersListScreen() {
       setPage(Math.ceil(alreadyLoadedData.length / 10));
       setFollowersList(alreadyLoadedData);
     } else if (page === 1) {
-      getSearchFollowers(login, page, isFollowingsList).then((res) => setFollowersList(userListMatrix(res.data)));
+      getSearchFollowers(login, page, isFollowingsList)
+        .then((res) => setFollowersList(userListMatrix(res.data)));
     }
   }, [login, isFollowingsList]);
 

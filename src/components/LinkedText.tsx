@@ -7,6 +7,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { useNavigation } from '@react-navigation/native';
 import { LINKCOLOR } from '../consts/theme';
 import { LinkedTextT } from '../../types';
+import { SafeTouch } from './SafeTouchable';
 
 function LinkedText({
   screenName, iconName, text, href, navigationProps,
@@ -28,9 +29,9 @@ function LinkedText({
   return (
     <View style={styles.container}>
       <Octicons name={iconName} size={25} style={styles.iconPadding} />
-      <Pressable onPress={handlePress}>
+      <SafeTouch onPress={handlePress}>
         <Text style={styles.textStyle}>{text}</Text>
-      </Pressable>
+      </SafeTouch>
     </View>
   );
 }

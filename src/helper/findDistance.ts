@@ -23,11 +23,13 @@ const IntersectionArea = (r1: number, r2: number, distance: number) => {
 const findDistance = (R1: number, R2: number, neededIntersectionArea: number) => {
   let maxDistance = R1 + R2;
   let minDistance = 0;
+  // left and Right in Binary Search
 
   if (neededIntersectionArea === 0) {
     return maxDistance;
   }
-  if (neededIntersectionArea >= Math.PI * R1 ** 2 || neededIntersectionArea >= Math.PI * R2 ** 2) {
+  const calculateS = (R:number) => Math.PI * R ** 2;
+  if (neededIntersectionArea >= calculateS(R1) || neededIntersectionArea >= calculateS(R2)) {
     return 0;
   }
   // Inner circle
@@ -35,12 +37,16 @@ const findDistance = (R1: number, R2: number, neededIntersectionArea: number) =>
   const accuracy = 0.1;
   let raoc = 0;
   // resulting area of intersection
-
+  // We put the Distance between circles to find the area of the intersection
+  // and if this area > or < needed Intersection Area
   let distance = maxDistance;
+
   // Next is Binary Search
   while (Math.abs(raoc - neededIntersectionArea) > accuracy) {
-    distance = Math.abs(maxDistance - minDistance) / 2 + minDistance;
+    distance = (maxDistance + minDistance) / 2;
+    // Center in Binary Search
     raoc = IntersectionArea(R1, R2, distance);
+    // here we put our distance to find if it is the correct intersection area
 
     if (raoc > neededIntersectionArea) {
       minDistance = distance;
@@ -50,5 +56,7 @@ const findDistance = (R1: number, R2: number, neededIntersectionArea: number) =>
     }
   }
   return distance;
+  // needed distance to get  Intersection area
 };
+
 export default findDistance;

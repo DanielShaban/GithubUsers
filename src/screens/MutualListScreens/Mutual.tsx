@@ -1,9 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import MemorizedProfileMainInfo from '../../components/ProfileMainInfo';
-
-import { MAINCOLOR } from '../../consts/theme';
 
 function Mutual() {
   const route = useRoute();
@@ -25,7 +23,6 @@ function Mutual() {
       />
     );
   }
-  // TODO:REMOVE SwitchSelector
 
   return (
     <View style={styles.container}>

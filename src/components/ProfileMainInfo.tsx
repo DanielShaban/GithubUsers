@@ -3,17 +3,18 @@ import React from 'react';
 import ProfileNames from './ProfileNames';
 import { ProfileMainInfoT } from '../../types';
 import UserAvatar from './UserAvatar';
+import { SafeTouch } from './SafeTouchable';
 
 function ProfileMainInfo({
   name, login, avatarUrl, pressHandle,
 }: ProfileMainInfoT) {
   return (
-    <Pressable onPress={pressHandle}>
+    <SafeTouch onPress={pressHandle}>
       <View style={styles.profileInfo}>
         <UserAvatar size={77} src={avatarUrl} />
         <ProfileNames name={name || login} userName={name && login} />
       </View>
-    </Pressable>
+    </SafeTouch>
   );
 }
 const styles = StyleSheet.create({

@@ -3,16 +3,16 @@ import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import MemorizedProfileMainInfo from '../../components/ProfileMainInfo';
 
-import { MAINCOLOR } from '../../consts/theme';
-
 function Followers() {
   const route = useRoute();
 
   const navigation = useNavigation();
-  const { followersList, mutualSubscribes } = route.params;
-
+  const {
+    followersList, followingsList, mutualSubscribes, isFollowingsList,
+  } = route.params;
   // Followers - mutual = onlyFollowers
-  const onlyFollowers: {}[] = followersList.filter((item) => !mutualSubscribes.find((el) => el.id === item.id));
+  const UserList = isFollowingsList ? followersList : followingsList;
+  const onlyFollowers: {}[] = UserList.filter((item) => !mutualSubscribes.find((el) => el.id === item.id));
 
   const pressHandle = (item) => navigation.push('ProfileScreen', {
     userLogin: item.login,
@@ -29,7 +29,6 @@ function Followers() {
       />
     );
   }
-  // TODO:REMOVE SwitchSelector
 
   return (
     <View style={styles.container}>

@@ -6,18 +6,13 @@ import FollowersListScreen from '../screens/FollowersListScreen';
 import HeaderBar from '../components/HeaderBar';
 import Mutual from '../screens/MutualListScreens/Mutual';
 import Followers from '../screens/MutualListScreens/Followers';
-import Followings from '../screens/MutualListScreens/Followings';
 import {
-  BLUECOLOR, LIGHTBLUECOLOR, LIGHTGREENCOLOR, LIGHTYELLOWCOLOR, MAINCOLOR,
+  LIGHTBLUECOLOR, LIGHTGREENCOLOR, LIGHTYELLOWCOLOR, MAINCOLOR,
 } from '../consts/theme';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-// { label: 'Only followings', value: '0', activeColor: BLUECOLOR },
-// { label: 'Mutual', value: '1', activeColor: GREENCOLOR },
-// { label: 'Only followers', value: '2', activeColor: YELLOWCOLOR },
-// ];
 function Tabs(props) {
   const { params } = props.route;
   return (
@@ -39,8 +34,13 @@ function Tabs(props) {
           },
           tabBarLabel: 'Only following',
         }}
-        component={Followings}
-        initialParams={params}
+        component={Followers}
+        initialParams={{
+          followersList: params.followersList,
+          followingsList: params.followingsList,
+          mutualSubscribes: params.mutualSubscribes,
+          isFollowingsList: true,
+        }}
       />
       <Tab.Screen
         name="Mutual"
@@ -66,7 +66,12 @@ function Tabs(props) {
           tabBarLabel: 'Only followers',
         }}
         component={Followers}
-        initialParams={params}
+        initialParams={{
+          followersList: params.followersList,
+          followingsList: params.followingsList,
+          mutualSubscribes: params.mutualSubscribes,
+          isFollowingsList: false,
+        }}
       />
     </Tab.Navigator>
   );
