@@ -11,7 +11,7 @@ function Followers() {
     followersList, followingsList, mutualSubscribes, isFollowingsList,
   } = route.params;
   // Followers - mutual = onlyFollowers
-  const UserList = isFollowingsList ? followersList : followingsList;
+  const UserList = isFollowingsList ? followingsList : followersList;
   const onlyFollowers: {}[] = UserList.filter((item) => !mutualSubscribes.find((el) => el.id === item.id));
 
   const pressHandle = (item) => navigation.push('ProfileScreen', {
